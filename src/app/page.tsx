@@ -1,101 +1,139 @@
+"use client";
 import Image from "next/image";
+import React, { useState, useEffect, CSSProperties } from "react";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const images = [
+    "/LAndingpage/image1.avif",
+    "/LAndingpage/image2.jpg",
+    "/LAndingpage/image3.jpg",
+  ];
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const goToNextSlide = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+  };
+
+  const goToPrevSlide = () => {
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
+  };
+
+  useEffect(() => {
+    const interval = setInterval(goToNextSlide, 3000);
+    return () => clearInterval(interval);
+  },  [goToNextSlide]);
+
+  return (
+    <div style={mainContainerStyle}>
+      {/* Hero Section */}
+      <section style={heroSectionStyle}>
+        <h1 style={heroTitleStyle}>Welcome to Travel Hub</h1>
+        <p style={heroDescriptionStyle}>
+          Your gateway to unforgettable adventures! Explore stunning destinations, plan your dream vacations, and embark on journeys that create memories for a lifetime.
+        </p>
+      </section>
+
+      {/* Carousel Section */}
+      <section style={carouselSectionStyle}>
+        <button onClick={goToPrevSlide} style={carouselButtonStyle}>&lt;</button>
+        <div style={carouselImageWrapperStyle}>
+          <Image src={images[currentIndex]} alt={`Slide ${currentIndex + 1}`}  width={500}  height={500} style={carouselImageStyle} />
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        <button onClick={goToNextSlide} style={carouselButtonStyle}>&gt;</button>
+      </section>
+
+      {/* Content Section */}
+      <section style={contentSectionStyle}>
+        <h2 style={contentTitleStyle}>Why Travel Hub?</h2>
+        <p style={contentDescriptionStyle}>
+          At Travel Hub, we believe in creating unforgettable experiences. Our platform makes it easy for you to discover the best travel destinations, book trips, and access helpful travel tips and guides.
+        </p>
+      </section>
     </div>
   );
 }
+
+// Main Container - Full Screen
+const mainContainerStyle: CSSProperties = {
+  width: "100vw",
+  height: "100vh", // Full screen height
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "space-between",
+  alignItems: "center",
+  backgroundColor: "#2C3E50", // Dark blue-gray for a professional look
+};
+
+// Hero Section
+const heroSectionStyle: CSSProperties = {
+  textAlign: "center",
+  color: "#ECF0F1",
+  padding: "60px 30px",
+};
+
+const heroTitleStyle: CSSProperties = {
+  fontSize: "40px",
+  fontFamily: "Poppins, sans-serif",
+  fontWeight: "700",
+  color: "#ECF0F1",
+};
+
+const heroDescriptionStyle: CSSProperties = {
+  fontSize: "18px",
+  fontFamily: "Roboto, sans-serif",
+  color: "#BDC3C7",
+};
+
+// Carousel Section - Full Width
+const carouselSectionStyle: CSSProperties = {
+  width: "100vw",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  backgroundColor: "#34495B", // Darker shade for depth
+  padding: "20px 0",
+};
+
+const carouselImageWrapperStyle: CSSProperties = {
+  width: "80%",
+  height: "550px",
+  overflow: "hidden",
+  display: "flex",
+  justifyContent: "center",
+};
+
+const carouselImageStyle: CSSProperties = {
+  width: "100%",
+  height: "100%",
+  objectFit: "cover",
+};
+
+const carouselButtonStyle: CSSProperties = {
+  backgroundColor: "rgba(0, 0, 0, 0.5)", // Semi-transparent buttons
+  border: "none",
+  fontSize: "40px",
+  color: "#ECF0F1",
+  cursor: "pointer",
+  padding: "10px 20px",
+};
+
+// Content Section
+const contentSectionStyle: CSSProperties = {
+  textAlign: "center",
+  padding: "40px 20px",
+  backgroundColor: "#2C3E50",
+ 
+};
+
+const contentTitleStyle: CSSProperties = {
+  fontSize: "28px",
+  fontFamily: "Poppins, sans-serif",
+  fontWeight: "600",
+  color: "white",
+};
+
+const contentDescriptionStyle: CSSProperties = {
+  fontSize: "18px",
+  fontFamily: "Roboto, sans-serif",
+  color: "white",
+};
